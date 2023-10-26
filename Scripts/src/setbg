@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+setwall(){
+	wallpaper_loc=$1
+}
+
+shuffle(){
+	wallpaper_loc=$(find $HOME/Pictures/Wallpapers -type f | shuf -n 1)
+}
+phoon(){
+	pngphoon -w 1920 -h 1080 -f $HOME/.caches/ping -s 100
+	wallpaper_loc="$HOME/.cache/ping"
+
+}
+helpscreen() { 
+	echo ""
+	echo "Usage: setbg [-s] [filepath]"
+	echo "Options:"
+	echo "-s : Shuffles your wallpaper and sets one from it"
+	echo "-x : Uses pngphoon to set the moon as your wallpaper"
+	echo "-h : Shows this fucking help menu"
+	echo "To set a specific file, use no flags and provide path"
+	echo ""
+	exit
+}
+
+case $1 in
+	-s)shuffle;;
+	-h)helpscreen;;
+	-x)phoon;;
+	*)setwall $1;;
+esac
+
+
+notify-send -i $wallpaper_loc "setting wallpaper"
+ln -f $wallpaper_loc $HOME/.config/sway/wall
+kill $(pidof swaybg)
+swaybg -i $wallpaper_loc -m fill &!
+notify-send "creating lockscreen image"
+convert -blur 0x5 $wallpaper_loc $HOME/.config/sway/wall-blurred
+notify-send "removing neofetch cache"
+rm -rf $HOME/.cache/thumbnails/neofetch
