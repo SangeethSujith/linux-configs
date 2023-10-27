@@ -39,6 +39,8 @@ alias vim=nvim
 alias nvim_config="~/.config/nvim/"
 
 # add kmonad to PATH
+# add vite run alias
+alias vrun="npm run dev -- --host"
 
 # add go path 
 export PATH=$PATH:/usr/local/go/bin
